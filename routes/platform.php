@@ -14,9 +14,11 @@ use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
 use App\Orchid\Screens\User\UserEditScreen;
 use App\Orchid\Screens\User\UserListScreen;
+use App\Orchid\Screens\Category\CategoryScreen;
 use App\Orchid\Screens\User\UserProfileScreen;
 use Illuminate\Support\Facades\Route;
 use Tabuna\Breadcrumbs\Trail;
+use App\Orchid\Screens\Product\ProdcutScreen;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +34,13 @@ use Tabuna\Breadcrumbs\Trail;
 // Main
 Route::screen('/main', PlatformScreen::class)
     ->name('platform.main');
+
+///admin
+Route::screen('category', CategoryScreen::class)
+    ->name('platform.category');
+
+Route::screen('product', ProdcutScreen::class)
+    ->name('platform.product');
 
 // Platform > Profile
 Route::screen('profile', UserProfileScreen::class)
