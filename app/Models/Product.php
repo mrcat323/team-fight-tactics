@@ -8,9 +8,10 @@ use Orchid\Screen\AsSource;
 
 class Product extends Model
 {
-    use HasFactory , AsSource;
+    use HasFactory, AsSource;
 
-     protected $fillable = ['name', 'description', 'price', 'category_id'];
+    protected $fillable = ['name', 'description', 'price', 'category_id'];
+
     public function category()
     {
         return $this->belongsTo(Category::class);

@@ -8,8 +8,10 @@ use Orchid\Screen\AsSource;
 
 class Category extends Model
 {
-    use HasFactory , AsSource;
-    protected $fillable = ['name'] ;
+    use HasFactory, AsSource;
+
+    protected $fillable = ['name'];
+
     public function products()
     {
         return $this->hasMany(Product::class);
