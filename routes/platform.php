@@ -18,6 +18,7 @@ use App\Orchid\Screens\Category\CategoryScreen;
 use App\Orchid\Screens\User\UserProfileScreen;
 use Illuminate\Support\Facades\Route;
 use Tabuna\Breadcrumbs\Trail;
+use App\Orchid\Screens\Product\ProdcutScreen;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,9 @@ Route::screen('/main', PlatformScreen::class)
 ///admin
 Route::screen('category', CategoryScreen::class)
     ->name('platform.category');
+
+Route::screen('product', ProdcutScreen::class)
+    ->name('platform.product');
 
 // Platform > Profile
 Route::screen('profile', UserProfileScreen::class)
