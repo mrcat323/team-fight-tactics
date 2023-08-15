@@ -2,14 +2,9 @@
 
 namespace App\Orchid\Screens\Product;
 
-use App\Models\Category;
-use App\Models\Product;
-use App\Orchid\Layouts\Product\ProductLayout;
-use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
-use Illuminate\Support\Str;
 
-class ProdcutScreen extends Screen
+class UpdateProduct extends Screen
 {
     /**
      * Query data.
@@ -18,12 +13,7 @@ class ProdcutScreen extends Screen
      */
     public function query(): iterable
     {
-
-        $products = Product::with('category')->paginate(15);
-        return [
-            'products' => $products
-
-        ];
+        return [];
     }
 
     /**
@@ -33,7 +23,7 @@ class ProdcutScreen extends Screen
      */
     public function name(): ?string
     {
-        return 'Products';
+        return 'UpdateProduct';
     }
 
     /**
@@ -43,10 +33,7 @@ class ProdcutScreen extends Screen
      */
     public function commandBar(): iterable
     {
-        return [
-            Link::make('Add')
-                ->route('platform.product.add'),
-        ];
+        return [];
     }
 
     /**
@@ -56,9 +43,6 @@ class ProdcutScreen extends Screen
      */
     public function layout(): iterable
     {
-        return [
-            ProductLayout::class
-
-        ];
+        return [];
     }
 }

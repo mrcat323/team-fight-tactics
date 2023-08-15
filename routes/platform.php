@@ -19,7 +19,10 @@ use App\Orchid\Screens\User\UserProfileScreen;
 use Illuminate\Support\Facades\Route;
 use Tabuna\Breadcrumbs\Trail;
 use App\Orchid\Screens\Product\ProdcutScreen;
-
+use App\Orchid\Screens\Category\UpdateCategory;
+use App\Orchid\Screens\Category\AddCategory;
+use App\Orchid\Screens\Category\DeleteCategory;
+use App\Orchid\Screens\Product\AddProduct;
 /*
 |--------------------------------------------------------------------------
 | Dashboard Routes
@@ -38,6 +41,17 @@ Route::screen('/main', PlatformScreen::class)
 ///admin
 Route::screen('category', CategoryScreen::class)
     ->name('platform.category');
+
+Route::screen('category-edit/{category}', UpdateCategory::class)
+    ->name('platform.category.edit');
+
+Route::screen('category-delete/{category}', CategoryScreen::class)
+    ->name('platform.category.delete');
+
+Route::screen('category-add', AddCategory::class)
+    ->name('platform.category.add');
+Route::screen('product-add', AddProduct::class)
+    ->name('platform.product.add');
 
 Route::screen('product', ProdcutScreen::class)
     ->name('platform.product');
