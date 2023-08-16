@@ -2,7 +2,10 @@
 
 namespace App\Orchid\Layouts\Product;
 
+use App\Models\Category;
 use App\Models\Product;
+use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\TD;
 
@@ -30,7 +33,15 @@ class ProductLayout extends Table
             TD::make('name'),
             TD::make('description'),
             TD::make('price'),
-            TD::make('category.name', 'Category')
+            TD::make('category.name', 'Category'),
+            TD::make()
+                ->render(fn($product) => Link::make('EDIT')->route('platform.product.edit', $product)),
+            TD::make()
+                ->render(function (Product $product) {
+                    return Button::make('DELETE'
+                    )->method('destroy')
+                        ->parameters(['product' => $product->id]);
+                })
         ];
     }
 }

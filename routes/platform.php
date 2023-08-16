@@ -23,6 +23,7 @@ use App\Orchid\Screens\Category\UpdateCategory;
 use App\Orchid\Screens\Category\AddCategory;
 use App\Orchid\Screens\Category\DeleteCategory;
 use App\Orchid\Screens\Product\AddProduct;
+use App\Orchid\Screens\Product\UpdateProduct;
 /*
 |--------------------------------------------------------------------------
 | Dashboard Routes
@@ -50,8 +51,12 @@ Route::screen('category-delete/{category}', CategoryScreen::class)
 
 Route::screen('category-add', AddCategory::class)
     ->name('platform.category.add');
+
 Route::screen('product-add', AddProduct::class)
     ->name('platform.product.add');
+
+Route::screen('product-edit/{product}', UpdateProduct::class)
+    ->name('platform.product.edit');
 
 Route::screen('product', ProdcutScreen::class)
     ->name('platform.product');

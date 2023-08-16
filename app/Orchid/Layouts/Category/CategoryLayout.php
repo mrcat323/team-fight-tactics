@@ -2,9 +2,11 @@
 
 namespace App\Orchid\Layouts\Category;
 
+use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\TD;
+use App\Models\Category;
 
 class CategoryLayout extends Table
 {
@@ -31,8 +33,12 @@ class CategoryLayout extends Table
             TD::make('name'),
             TD::make()
                 ->render(fn($category) => Link::make('EDIT')->route('platform.category.edit', $category)),
-               TD::make()
-                ->render(fn($category) => Link::make('DELETE')->route('platform.category.delete', $category)),
+            TD::make()
+                ->render(function(Category $category){
+                    return Button::make('DELETE'
+                                )->method('destroy')
+                                ->parameters(['category' => $category->id]);
+                })
         ];
     }
 }

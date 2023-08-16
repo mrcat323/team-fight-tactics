@@ -19,7 +19,7 @@ class AddCategory extends Screen
     public function query(): iterable
     {
         return [
-
+            
         ];
     }
 

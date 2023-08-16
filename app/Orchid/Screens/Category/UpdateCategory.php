@@ -64,14 +64,10 @@ class UpdateCategory extends Screen
 
     public function update(Request $request, Category $category)
     {
-        $category->update($request->all());
+        $categoryData = $request->input('category');
+        $category->update($categoryData);
 
         return redirect()->route('platform.category');
     }
-//    public function destroy (Category $category)
-//    {
-//        $category->delete();
-//        return redirect()->route('platform.category');
-//
-//    }
+
 }

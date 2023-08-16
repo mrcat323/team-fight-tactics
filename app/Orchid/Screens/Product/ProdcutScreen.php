@@ -5,6 +5,7 @@ namespace App\Orchid\Screens\Product;
 use App\Models\Category;
 use App\Models\Product;
 use App\Orchid\Layouts\Product\ProductLayout;
+use Illuminate\Http\Request;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
 use Illuminate\Support\Str;
@@ -60,5 +61,14 @@ class ProdcutScreen extends Screen
             ProductLayout::class
 
         ];
+    }
+
+    public function destroy(Request $request)
+    {
+        $product = Product::find($request->product);
+
+        $product->delete();
+        return redirect()->route('platform.product');
+
     }
 }

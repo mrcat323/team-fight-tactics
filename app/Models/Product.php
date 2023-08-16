@@ -18,6 +18,6 @@ class Product extends Model
     }
     public function tags()
     {
-        return $this->hasMany(Tags::class);
+        return $this->belongsToMany(Tags::class, 'product_tags', 'product_id', 'tag_id');
     }
 }
