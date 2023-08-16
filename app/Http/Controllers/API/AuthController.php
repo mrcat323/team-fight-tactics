@@ -49,8 +49,8 @@ class AuthController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
-           'access_token' => $token,
-           'type' => 'Bearer',
+            'access_token' => $token,
+            'type' => 'Bearer',
             'expires_in' => \Config::get('jwt.ttl') * 60
         ]);
     }
