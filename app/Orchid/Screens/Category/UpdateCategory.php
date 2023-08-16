@@ -3,25 +3,23 @@
 namespace App\Orchid\Screens\Category;
 
 use App\Models\Category;
-use App\Models\Product;
-use App\Orchid\Layouts\Category\CategoryLayout;
-use Orchid\Screen\Actions\Button;
-use Orchid\Screen\Actions\Link;
-use Orchid\Screen\Layout;
-use Orchid\Screen\Layouts\Accordion;
-use Orchid\Screen\Screen;
 use Illuminate\Http\Request;
-class CategoryScreen extends Screen
+use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Screen;
+use Orchid\Support\Facades\Layout;
+
+class UpdateCategory extends Screen
 {
     /**
      * Query data.
      *
      * @return array
      */
-    public function query(): iterable
+    public function query(Category  $category): iterable
     {
         return [
-            'categories' => Category::paginate(15)
+            'category' => $category
         ];
     }
 
@@ -32,7 +30,7 @@ class CategoryScreen extends Screen
      */
     public function name(): ?string
     {
-        return 'Category';
+        return 'UpdateCategory';
     }
 
     /**
@@ -43,8 +41,8 @@ class CategoryScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Link::make('Add')
-                ->route('platform.category.add'),
+            Button::make('save')
+                ->method('update')
         ];
     }
 
@@ -56,20 +54,20 @@ class CategoryScreen extends Screen
     public function layout(): iterable
     {
         return [
-            CategoryLayout::class,
-
+            Layout::rows([
+                Input::make('category.name')
+                    ->type('text')
+                    ->title('Category name:')
+            ])
         ];
     }
 
-    public function destroy(Request $request)
+    public function update(Request $request, Category $category)
     {
-        $category = Category::find($request->category);
-        $product = Product::where('category_id' , $request->category);
+        $categoryData = $request->input('category');
+        $category->update($categoryData);
 
-//        $request->category->delete();
-        $product->delete();
-        $category->delete();
         return redirect()->route('platform.category');
-
     }
+
 }
