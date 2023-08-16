@@ -7,13 +7,11 @@ use Illuminate\Http\Request;
 
 class SubscribersController extends Controller
 {
-        public function Create(Request $request ){
+    public function store(Request $request)
+    {
+        $subscribers = Subcribers::create($request->all());
 
-        }
-        public function SetStatus( Subcribers $subscribers , Request $request){
-            $subscribers = Subcribers::where('id' ,$request);
-            if($subscribers->status){
-                dd($subscribers);
-            }
-        }
+        return $subscribers;
+    }
+
 }

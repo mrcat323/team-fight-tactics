@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\SubscribersController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,3 +20,4 @@ Route::prefix('auth')->middleware('api')->controller(\App\Http\Controllers\API\A
     Route::get('/user', 'user');
     Route::post('/logout', 'logout');
 });
+Route::post('subscribe' , [SubscribersController::class , 'store']);

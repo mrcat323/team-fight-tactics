@@ -15,6 +15,9 @@ class CreateSubcribersTable extends Migration
     {
         Schema::create('subcribers', function (Blueprint $table) {
             $table->id();
+            $table->string('email');
+            $table->string('email_verified')->nullable();
+            $table->boolean('status')->nullable()->default(0);
             $table->timestamps();
         });
     }
