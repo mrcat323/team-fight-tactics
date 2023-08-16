@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use Orchid\Platform\Models\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     /**
      * The attributes that are mass assignable.
@@ -29,11 +30,25 @@ class User extends Authenticatable
         'permissions',
     ];
 
+    public function getJWTIdentifier()
+    {
+        // TODO: Implement getJWTIdentifier() method.
+
+        return $this->getKey();
+    }
+
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
+
+    public function getJWTCustomClaims()
+    {
+        // TODO: Implement getJWTCustomClaims() method.
+        return[];
+    }
+
     protected $casts = [
         'permissions'          => 'array',
         'email_verified_at'    => 'datetime',
