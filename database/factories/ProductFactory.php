@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Category;
+use App\Models\Product;
+use App\Models\Tags;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductFactory extends Factory
@@ -21,6 +23,19 @@ class ProductFactory extends Factory
             'category_id' => function () {
                 return Category::factory()->create()->id;
             },
+
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Product $product) {
+            $tagNames = $this->faker->words(rand(1, 5));
+
+            foreach ($tagNames as $tagName) {
+                $tag = Tags::firstOrCreate(['name' => $tagName]);
+                $product->tags()->attach($tag);
+            }
+        });
     }
 }
