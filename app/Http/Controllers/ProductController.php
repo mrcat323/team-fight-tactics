@@ -8,11 +8,11 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-//    public function index()
-//    {
-//        $product = Product::all();
-//        return ProductResource::collection($product);
-//    }
+    public function index()
+    {
+        $product = Product::all();
+        return response()->json($product);
+    }
     public function show($id)
     {
         $product = Product::with(['category', 'tags'])->findOrFail($id);
