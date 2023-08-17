@@ -37,12 +37,14 @@ class SubscribersController extends Controller
         ]);
     }
 
-
     public function verify(Request $request)
     {
+
         $verify = Subcribers::where('email_verified', $request->hash)->first();
         if ($verify) {
+            $hash = Str::random(40);
             $verify->status = true;
+            $verify->email_verified = $hash;
             $verify->save();
             return 'Your email has been verified';
         }
