@@ -2,16 +2,53 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SubscribeJob;
 use App\Models\Subcribers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 
 class SubscribersController extends Controller
 {
     public function store(Request $request)
     {
-        $subscribers = Subcribers::create($request->all());
+        $validated = $request->validate([
+            'email' => 'required|email|unique:subcribers,email',
+        ]);
 
-        return $subscribers;
+        $email = $validated['email'];
+        $hash = Str::random(40);
+
+        $subscriber = Subcribers::create([
+            'email' => $email,
+            'email_verified' => $hash,
+        ]);
+
+        $data = [
+            'email' => $email,
+            'verification_code' => $hash
+        ];
+
+        dispatch(new SubscribeJob($data));
+
+        return response()->json([
+            'msg' => 'Sent successfully'
+        ]);
+    }
+
+
+    public function verify(Request $request)
+    {
+        $verify = Subcribers::where('email_verified', $request->hash)->first();
+        if ($verify) {
+            $verify->status = true;
+            $verify->save();
+            return 'Your email has been verified';
+        }
+        else {
+            return 'Email not found';
+        }
     }
 
 }

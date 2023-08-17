@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SubscribersController;
+use App\Http\Controllers\API\AuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,10 +15,13 @@ use App\Http\Controllers\SubscribersController;
 |
 */
 
-Route::prefix('auth')->middleware('api')->controller(\App\Http\Controllers\API\AuthController::class)->group(function(){
+Route::prefix('auth')->middleware('api')->controller(AuthController::class)->group(function() {
     Route::post('/register', 'register');
     Route::post('/login', 'login')->name('login');
     Route::get('/user', 'user');
     Route::post('/logout', 'logout');
+
 });
-Route::post('subscribe' , [SubscribersController::class , 'store']);
+Route::post('subscribe', [SubscribersController::class, 'store'])->name('verification.notice');
+
+Route::get('/email/verify/{hash}', [SubscribersController::class, 'verify'])->name('subscriber.verify');
