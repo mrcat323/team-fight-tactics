@@ -2,9 +2,12 @@
 
 namespace App\Orchid\Screens\Product;
 
+use App\Jobs\ProductJob;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Subcribers;
 use App\Models\Tags;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Field;
@@ -92,6 +95,18 @@ class AddProduct extends Screen
                 $tag = Tags::firstOrCreate(['name' => $tagName]);
                 $product->tags()->attach($tag);
             }
+        }
+
+        $subs = Subcribers::where('status', 1)->get();
+        foreach ($subs as $sub) {
+            $email = $sub->email;
+            $data = [
+                'email' => $email,
+                'product' => $product
+            ];
+           /// dd($data['product']);
+            dispatch(new ProductJob($data));
+
         }
 
         return redirect()->route('platform.product');
