@@ -27,4 +27,4 @@ Route::post('subscribe', [SubscribersController::class, 'store'])->name('verific
 Route::get('/email/verify/{hash}', [SubscribersController::class, 'verify'])->name('subscriber.verify');
 Route::get('/product/{id}', [\App\Http\Controllers\ProductController::class, 'show'])->name('product.show');
 Route::get('/products', [\App\Http\Controllers\ProductController::class, 'index'])->name('product.index');
-Route::get('/products/search', [\App\Http\Controllers\SearchController::class, 'search'])->name('products.search');
+Route::get('/search', [\App\Http\Controllers\SearchController::class, 'search'])->name('products.search');
