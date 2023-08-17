@@ -3,14 +3,18 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\AuthJob;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+
 class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api')->except(['login', 'register']);
+        $this->middleware('auth:api')->except(['login', 'register', 'verify']);
     }
 
     public function register(Request $request)
@@ -23,8 +27,16 @@ class AuthController extends Controller
         ]);
         if ($validate->passes()) {
             $data = $request->all();
+            $hash = Str::random(40);
+            $data['hash'] = $hash;
             $data['password'] = bcrypt($data['password']);
             $user = User::create($data);
+
+            $dataMail =[
+                'email' => $request->email,
+                'verification_code' => $hash
+            ];
+                    dispatch( new AuthJob($dataMail));
             return response()->json(['message' => 'User registered successfully']);
         }
     }
@@ -54,5 +66,20 @@ class AuthController extends Controller
             'expires_in' => \Config::get('jwt.ttl') * 60
         ]);
     }
+    public function verify(Request $request)
+    {
+        $verify = User::where('hash', $request->hash)->first();
 
+        if ($verify->email_verified_at) {
+            return 'Your email already verified';
+        }
+        elseif ($verify) {
+            $verify->email_verified_at = Carbon::now();
+            $verify->save();
+            return 'Your email has been verified';
+        }
+        else {
+            return 'Email not found';
+        }
+    }
 }
