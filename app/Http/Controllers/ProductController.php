@@ -10,7 +10,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $product = Product::all();
+        $product = Product::paginate(8);
         return response()->json($product);
     }
     public function show($id)
