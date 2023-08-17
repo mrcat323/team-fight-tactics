@@ -15,9 +15,10 @@ use App\Http\Controllers\API\AuthController;
 |
 */
 
-Route::prefix('auth')->middleware('api')->controller(\App\Http\Controllers\API\AuthController::class)->group(function(){
+Route::prefix('auth')->middleware('api')->controller(AuthController::class)->group(function(){
     Route::post('/register', 'register');
     Route::post('/login', 'login')->name('login');
     Route::get('/user', 'user');
     Route::post('/logout', 'logout');
 });
+Route::get('/user/verify/{hash}', [AuthController::class, 'verify'])->name('user.verify');
