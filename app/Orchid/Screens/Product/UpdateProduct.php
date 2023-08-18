@@ -21,8 +21,13 @@ class UpdateProduct extends Screen
      */
     public function query(Product $product): iterable
     {
+        $tags = '';
+        foreach ($product->tags as $tag) {
+            $tags .= $tag->name . ',';
+        }
         return [
-            'product' => $product
+            'product' => $product,
+            'tags' => $tags
         ];
     }
 
@@ -78,24 +83,28 @@ class UpdateProduct extends Screen
 
     public function update(Product $product, Request $request)
     {
-        $productData = $request->except('_token', 'tags');
+        $name = $request->input('product.name');
+        $description = $request->input('product.description');
+        $price = $request->input('product.price');
         $tagsInput = $request->input('tags');
 
-        $product->update($productData);
+        $product->update([
+            'name' => $name,
+            'description' => $description,
+            'price' => $price
+        ]);
 
-         $product->tags()->detach();
+        $product->tags()->detach();
 
         if ($tagsInput) {
             $tagNames = explode(',', $tagsInput);
 
             foreach ($tagNames as $tagName) {
-                $tagName = trim($tagName);
-
-                $tag = Tags::firstOrCreate(['name' => $tagName]);
+                $tag = Tags::firstOrCreate(['name' => trim($tagName)]);
                 $product->tags()->attach($tag);
             }
         }
 
-        return redirect()->route('platform.product');
+        return redirect()->route('platform.products');
     }
 }

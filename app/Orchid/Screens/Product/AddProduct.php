@@ -74,43 +74,40 @@ class AddProduct extends Screen
                     ->title('Category'),
                 Input::make('tags')
                     ->type('text')
+                    ->required()
                     ->title('Tags (comma-separated)')
             ])];
     }
 
     public function create(Request $request)
     {
-        $productData = $request->except('_token', 'tags');
         $tagsInput = $request->input('tags');
 
-        $product = new Product($productData);
-        $product->save();
+        $category = Category::find($request->category_id);
+        $product = $category->products()->create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price
+        ]);
 
-        if ($tagsInput) {
-            $tagNames = explode(',', $tagsInput);
+        $tagNames = explode(',', $tagsInput);
 
-            foreach ($tagNames as $tagName) {
-                $tagName = trim($tagName);
-
-                $tag = Tags::firstOrCreate(['name' => $tagName]);
-                $product->tags()->attach($tag);
-            }
+        foreach ($tagNames as $tagName) {
+            $tag = Tags::firstOrCreate(['name' => trim($tagName)]);
+            $product->tags()->attach($tag);
         }
 
         $subs = Subcribers::where('status', 1)->get();
         foreach ($subs as $sub) {
-            $email = $sub->email;
-            $email_verified = $sub->email_verified;
             $data = [
-                'email' => $email,
-                'verification_code' => $email_verified,
+                'email' => $sub->email,
+                'verification_code' => $sub->email_verified,
                 'product' => $product
             ];
             dispatch(new ProductJob($data));
-
         }
 
-        return redirect()->route('platform.product');
+        return redirect()->route('platform.products');
 
     }
 }
