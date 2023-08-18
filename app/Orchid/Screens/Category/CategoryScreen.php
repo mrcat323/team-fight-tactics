@@ -21,7 +21,7 @@ class CategoryScreen extends Screen
     public function query(): iterable
     {
         return [
-            'categories' => Category::paginate(15)
+            'categories' => Category::paginate()
         ];
     }
 
@@ -64,11 +64,9 @@ class CategoryScreen extends Screen
     public function destroy(Request $request)
     {
         $category = Category::find($request->category);
-        $product = Product::where('category_id' , $request->category);
-
-//        $request->category->delete();
-        $product->delete();
+        $category->products()->delete();
         $category->delete();
+
         return redirect()->route('platform.category');
 
     }

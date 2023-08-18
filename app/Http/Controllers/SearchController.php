@@ -13,7 +13,7 @@ class SearchController extends Controller
 
         $products = Product::where('name', 'LIKE', "%$search%")
             ->orWhere('description', 'LIKE', "%$search%")
-            ->paginate(8);
+            ->paginate();
 
         return response()->json(['products' => $products]);
     }

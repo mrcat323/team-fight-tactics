@@ -18,9 +18,7 @@ class AddCategory extends Screen
      */
     public function query(): iterable
     {
-        return [
-            
-        ];
+        return [];
     }
 
     /**
@@ -64,7 +62,7 @@ class AddCategory extends Screen
 
     public function create(Request $request)
     {
-        $category = Category::create([
+        Category::create([
             'name' => $request->name,
         ]);
 

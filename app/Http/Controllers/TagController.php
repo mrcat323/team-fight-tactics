@@ -3,9 +3,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\TagResource;
 use App\Models\Tags;
-use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
@@ -17,7 +15,7 @@ class TagController extends Controller
 
     public function show($id)
     {
-        $tag = Tags::findOrFail($id);
+        $tag = Tags::with('products')->findOrFail($id);
         return response()->json($tag);
     }
 

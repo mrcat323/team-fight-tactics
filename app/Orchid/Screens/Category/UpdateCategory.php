@@ -16,7 +16,7 @@ class UpdateCategory extends Screen
      *
      * @return array
      */
-    public function query(Category  $category): iterable
+    public function query(Category $category): iterable
     {
         return [
             'category' => $category
@@ -64,8 +64,9 @@ class UpdateCategory extends Screen
 
     public function update(Request $request, Category $category)
     {
-        $categoryData = $request->input('category');
-        $category->update($categoryData);
+        $category->update([
+            'name' => $request->input('category.name')
+        ]);
 
         return redirect()->route('platform.category');
     }

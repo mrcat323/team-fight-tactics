@@ -19,8 +19,7 @@ class ProdcutScreen extends Screen
      */
     public function query(): iterable
     {
-
-        $products = Product::with('category')->paginate(15);
+        $products = Product::with('category')->paginate();
         return [
             'products' => $products
 
@@ -58,8 +57,7 @@ class ProdcutScreen extends Screen
     public function layout(): iterable
     {
         return [
-            ProductLayout::class
-
+            ProductLayout::class,
         ];
     }
 

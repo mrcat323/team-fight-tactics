@@ -20,7 +20,7 @@ class SubscribersController extends Controller
         $email = $validated['email'];
         $hash = Str::random(40);
 
-        $subscriber = Subcribers::create([
+        Subcribers::create([
             'email' => $email,
             'email_verified' => $hash,
         ]);
@@ -46,26 +46,32 @@ class SubscribersController extends Controller
             $verify->status = true;
             $verify->email_verified = $hash;
             $verify->save();
-            return 'Your email has been verified';
-        }
-        else {
-            return 'Email not found';
-        }
-    }
-    public function UnVerify(Request $request)
-    {
 
+            return response()->json([
+                'msg' => 'Email sent successfully'
+            ]);
+        }
+
+        return response()->json([
+            'msg' => 'Email not found'
+        ]);
+    }
+    public function unVerify(Request $request)
+    {
         $verify = Subcribers::where('email_verified', $request->hash)->first();
         if ($verify) {
             $hash = Str::random(40);
             $verify->status = false;
             $verify->email_verified = $hash;
             $verify->save();
-            return 'Your email has been UnVerified';
+            return response()->json([
+                'msg' => 'Successfully unsubscribed'
+            ]);
         }
-        else {
-            return 'Email not found';
-        }
+
+        return response()->json([
+            'msg' => 'Email not found'
+        ]);
     }
 
 }

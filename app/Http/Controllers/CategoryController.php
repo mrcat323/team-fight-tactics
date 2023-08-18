@@ -3,9 +3,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\CategoryResource;
 use App\Models\Category;
-use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -14,9 +12,10 @@ class CategoryController extends Controller
         $category = Category::all();
         return response()->json($category);
     }
+
     public function show($id)
     {
-        $category = Category::findOrFail($id);
+        $category = Category::with('products')->findOrFail($id);
         return response()->json($category);
     }
 }

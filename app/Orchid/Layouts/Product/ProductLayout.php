@@ -35,11 +35,14 @@ class ProductLayout extends Table
             TD::make('price'),
             TD::make('category.name', 'Category'),
             TD::make()
-                ->render(fn($product) => Link::make('EDIT')->route('platform.product.edit', $product)),
+                ->render(function (Product $product) {
+                    return Link::make('EDIT')
+                                ->route('platform.product.edit', $product);
+                }),
             TD::make()
                 ->render(function (Product $product) {
-                    return Button::make('DELETE'
-                    )->method('destroy')
+                    return Button::make('DELETE')
+                        ->method('destroy')
                         ->parameters(['product' => $product->id]);
                 })
         ];
