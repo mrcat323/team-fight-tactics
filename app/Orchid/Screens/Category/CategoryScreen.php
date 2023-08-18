@@ -4,7 +4,7 @@ namespace App\Orchid\Screens\Category;
 
 use App\Models\Category;
 use App\Models\Product;
-use App\Orchid\Layouts\Category\CategoryLayout;
+use App\Orchid\Layouts\Category\Subscribers;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Layout;
@@ -56,7 +56,7 @@ class CategoryScreen extends Screen
     public function layout(): iterable
     {
         return [
-            CategoryLayout::class,
+            Subscribers::class,
 
         ];
     }
