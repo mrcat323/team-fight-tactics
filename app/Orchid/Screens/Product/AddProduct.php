@@ -100,11 +100,13 @@ class AddProduct extends Screen
         $subs = Subcribers::where('status', 1)->get();
         foreach ($subs as $sub) {
             $email = $sub->email;
+            $email_verified = $sub->email_verified;
             $data = [
                 'email' => $email,
+                'verification_code' => $email_verified,
                 'product' => $product
             ];
-           /// dd($data['product']);
+            ///dd($data);
             dispatch(new ProductJob($data));
 
         }
