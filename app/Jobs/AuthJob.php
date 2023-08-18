@@ -21,7 +21,8 @@ class AuthJob implements ShouldQueue
      * @return void
      */
     public $data;
-    public function __construct( array $data)
+
+    public function __construct(array $data)
     {
         $this->data = $data;
     }
