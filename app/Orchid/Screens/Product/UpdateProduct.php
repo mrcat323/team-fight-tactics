@@ -23,8 +23,10 @@ class UpdateProduct extends Screen
     {
         $tags = '';
         foreach ($product->tags as $tag) {
-            $tags .= $tag->name . ',';
+            $tags .= ',' . $tag->name ;
         }
+        $tags[0]=' ';
+
         return [
             'product' => $product,
             'tags' => $tags
