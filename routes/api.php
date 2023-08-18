@@ -27,9 +27,10 @@ Route::prefix('auth')->middleware('api')->controller(AuthController::class)->gro
 });
 Route::post('subscribe', [SubscribersController::class, 'store'])->name('verification.notice');
 Route::get('/email/verify/{hash}', [SubscribersController::class, 'verify'])->name('subscriber.verify');
-Route::get('/product/{id}', [\App\Http\Controllers\ProductController::class, 'show'])->name('product.show');
-Route::get('/products', [\App\Http\Controllers\ProductController::class, 'index'])->name('product.index');
-Route::get('/products/search', [\App\Http\Controllers\SearchController::class, 'search'])->name('products.search');
+Route::get('/email/unverify/{hash}', [SubscribersController::class, 'UnVerify'])->name('subscriber.unverify');
+Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
+Route::get('/products', [ProductController::class, 'index'])->name('product.index');
+Route::get('/search', [SearchController::class, 'search'])->name('products.search');
 
 Route::get('categories', [CategoryController::class, 'index'])->name('category.index');
 Route::get('/category/{id}', [CategoryController::class, 'show'])->name('category.show');

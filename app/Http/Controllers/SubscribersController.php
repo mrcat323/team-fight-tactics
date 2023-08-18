@@ -52,5 +52,20 @@ class SubscribersController extends Controller
             return 'Email not found';
         }
     }
+    public function UnVerify(Request $request)
+    {
+
+        $verify = Subcribers::where('email_verified', $request->hash)->first();
+        if ($verify) {
+            $hash = Str::random(40);
+            $verify->status = false;
+            $verify->email_verified = $hash;
+            $verify->save();
+            return 'Your email has been UnVerified';
+        }
+        else {
+            return 'Email not found';
+        }
+    }
 
 }
