@@ -11,7 +11,7 @@ use App\Orchid\Screens\Category\CategoryScreen;
 use App\Orchid\Screens\User\UserProfileScreen;
 use Illuminate\Support\Facades\Route;
 use Tabuna\Breadcrumbs\Trail;
-use App\Orchid\Screens\Product\ProdcutScreen;
+use App\Orchid\Screens\Product\ProductScreen;
 use App\Orchid\Screens\Category\UpdateCategory;
 use App\Orchid\Screens\Category\AddCategory;
 use App\Orchid\Screens\Product\AddProduct;
@@ -50,8 +50,11 @@ Route::screen('product-add', AddProduct::class)
 Route::screen('product-edit/{product}', UpdateProduct::class)
     ->name('platform.product.edit');
 
-Route::screen('product', ProdcutScreen::class)
+Route::screen('product', ProductScreen::class)
     ->name('platform.products');
+
+Route::screen('subscribers', \App\Orchid\Screens\Subscribers\SubscribersScreen::class)
+    ->name('platform.subscribers');
 
 // Platform > Profile
 Route::screen('profile', UserProfileScreen::class)

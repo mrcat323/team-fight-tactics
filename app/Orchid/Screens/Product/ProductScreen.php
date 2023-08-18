@@ -10,7 +10,7 @@ use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
 use Illuminate\Support\Str;
 
-class ProdcutScreen extends Screen
+class ProductScreen extends Screen
 {
     /**
      * Query data.
