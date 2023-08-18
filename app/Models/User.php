@@ -31,10 +31,13 @@ class User extends Authenticatable implements JWTSubject
         'permissions',
     ];
 
+    protected $casts = [
+        'permissions'          => 'array',
+        'email_verified_at'    => 'datetime',
+    ];
+
     public function getJWTIdentifier()
     {
-        // TODO: Implement getJWTIdentifier() method.
-
         return $this->getKey();
     }
 
@@ -46,37 +49,6 @@ class User extends Authenticatable implements JWTSubject
 
     public function getJWTCustomClaims()
     {
-        // TODO: Implement getJWTCustomClaims() method.
-        return[];
+        return [];
     }
-
-    protected $casts = [
-        'permissions'          => 'array',
-        'email_verified_at'    => 'datetime',
-    ];
-
-    /**
-     * The attributes for which you can use filters in url.
-     *
-     * @var array
-     */
-    protected $allowedFilters = [
-        'id',
-        'name',
-        'email',
-        'permissions',
-    ];
-
-    /**
-     * The attributes for which can use sort in url.
-     *
-     * @var array
-     */
-    protected $allowedSorts = [
-        'id',
-        'name',
-        'email',
-        'updated_at',
-        'created_at',
-    ];
 }

@@ -10,5 +10,4 @@ class Subcribers extends Model
     use HasFactory;
 
     protected $fillable = ['email', 'email_verified', 'status'];
-
 }
