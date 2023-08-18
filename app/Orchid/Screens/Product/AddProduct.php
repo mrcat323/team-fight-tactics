@@ -106,7 +106,6 @@ class AddProduct extends Screen
                 'verification_code' => $email_verified,
                 'product' => $product
             ];
-            ///dd($data);
             dispatch(new ProductJob($data));
 
         }
