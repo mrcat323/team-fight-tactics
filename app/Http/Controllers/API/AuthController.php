@@ -26,24 +26,27 @@ class AuthController extends Controller
             'password' => 'required|min:4|max:32'
         ]);
         if ($validate->passes()) {
-            $data = $request->all();
-            $hash = Str::random(40);
-            $data['hash'] = $hash;
-            $data['password'] = bcrypt($data['password']);
-            $user = User::create($data);
+            $hash = Str::random(60);
+
+            User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'hash' => $hash
+            ]);
 
             $dataMail =[
                 'email' => $request->email,
                 'verification_code' => $hash
             ];
-                    dispatch( new AuthJob($dataMail));
+            dispatch(new AuthJob($dataMail));
             return response()->json(['message' => 'User registered successfully']);
         }
     }
     public function login(Request $request)
     {
         $credentials = $request->only(['email', 'password']);
-        if (!$token = auth('api')->attempt($credentials)){
+        $user = User::where('email', $credentials['email'])->first();
+        if (!$user->email_verified_at || !$token = auth('api')->attempt($credentials)){
             return response()->json(['error'=> 'Unauthorized'], 401);
         }
         return $this->respondWithToken($token);
