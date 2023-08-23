@@ -75,6 +75,7 @@ class NewsLetterScreen extends Screen
                 'password' => env('SOUL_PASSWORD'),
             ],
         ]);
+
         if ($response->getStatusCode() === 200) {
             $token = json_decode($response->getBody(), true);
 

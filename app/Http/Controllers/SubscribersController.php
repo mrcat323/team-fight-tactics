@@ -2,71 +2,45 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\SubscribeJob;
-use App\Models\Subcribers;
+use App\Models\User;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Str;
 
 class SubscribersController extends Controller
 {
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'email' => 'required|email|unique:subcribers,email',
+            'email' => 'required|email',
         ]);
 
-        $email = $validated['email'];
-        $hash = Str::random(40);
-
-        $sub = Subcribers::create([
-            'email' => $email,
-            'email_verified' => $hash,
-        ]);
-
-        $HOST = env('SOUL_HOST') .":". env('SOUL_PORT');
+        $email=$validated['email'];
+        $token = User::getToken();
+        $HOST = env('SOUL_HOST') . ":" . env('SOUL_PORT');
         $client = new Client([
             'base_uri' => $HOST
         ]);
-        $response = $client->post('api/login', [
-            'json' => [
-                'email' => env('SOUL_USER'),
-                'password' => env('SOUL_PASSWORD'),
-            ],
-        ]);
-        if ($response->getStatusCode() === 200) {
-            $token =  json_decode($response->getBody(), true);
-
-            $status = 0;
             $response = $client->post('api/subscriber-add', [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $token,
                     'Accept' => 'application/json',
                 ],
                 'json' => [
-                    'email' => $email,
-                    'email_verified' => $hash,
-                    'status' => $status,
+                    'email' => $email
                 ],
             ]);
 
-            if ($response->getStatusCode() === 200) {
+            if ($response->getStatusCode() === 201) {
                 return response()->json([
                     'status' => 'OK'
                 ]);
-            }
-            else {
+            } else {
                 return response()->json([
                     'status' => 'False'
                 ]);
             }
         }
 
-        return response()->json([
-            'status' => 'False'
-        ]);
 
 //        $data = [
 //            'email' => $email,
@@ -78,7 +52,7 @@ class SubscribersController extends Controller
 //        return response()->json([
 //            'msg' => 'Sent successfully'
 //        ]);
-    }
+ ///   }
 
 //
 //    public function verify(Request $request)

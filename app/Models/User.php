@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use GuzzleHttp\Client;
 use Orchid\Platform\Models\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -32,8 +33,8 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     protected $casts = [
-        'permissions'          => 'array',
-        'email_verified_at'    => 'datetime',
+        'permissions' => 'array',
+        'email_verified_at' => 'datetime',
     ];
 
     public function getJWTIdentifier()
@@ -50,5 +51,26 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public static function getToken()
+    {
+        $HOST = env('SOUL_HOST') . ":" . env('SOUL_PORT');
+        $client = new Client([
+            'base_uri' => $HOST
+        ]);
+        $response = $client->post('api/login', [
+            'json' => [
+                'email' => env('SOUL_USER'),
+                'password' => env('SOUL_PASSWORD'),
+            ],
+        ]);
+        if ($response->getStatusCode() === 200) {
+            $token = json_decode($response->getBody(), true);
+            return $token;
+        }
+        else {
+            return 0;
+        }
     }
 }
