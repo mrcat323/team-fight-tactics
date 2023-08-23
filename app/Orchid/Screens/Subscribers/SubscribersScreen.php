@@ -2,9 +2,9 @@
 
 namespace App\Orchid\Screens\Subscribers;
 
-use App\Http\Controllers\SubscribersController;
-use App\Models\Subcribers;
+use App\Models\User;
 use App\Orchid\Layouts\Subscribers\SubscribersLayout;
+use GuzzleHttp\Client;
 use Orchid\Screen\Screen;
 
 class SubscribersScreen extends Screen
@@ -16,10 +16,25 @@ class SubscribersScreen extends Screen
      */
     public function query(): iterable
     {
-        $sub = Subcribers::paginate();
+
+        $token = User::getToken();
+        $HOST = env('SOUL_HOST') . ":" . env('SOUL_PORT');
+        $client = new Client([
+            'base_uri' => $HOST
+        ]);
+        $response = $client->get('api/subscribers', [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $token,
+                'Accept' => 'application/json',
+            ],
+        ]);
+        $subscribers = json_decode($response->getBody()->getContents(), true);
+//        dd($subscribers);
+
         return [
-            'subscribers' => $sub,
+            'subscribers' => $subscribers,
         ];
+
     }
 
     /**

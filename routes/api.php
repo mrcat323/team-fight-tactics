@@ -6,7 +6,8 @@ use App\Http\Controllers\SubscribersController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TagController;
-
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SearchController;
 /*
 |--------------------------------------------------------------------------
 | API Routes

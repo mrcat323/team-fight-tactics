@@ -2,6 +2,7 @@
 
 namespace App\Orchid\Layouts\Subscribers;
 
+use App\Models\User;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\TD;
 
@@ -25,11 +26,20 @@ class SubscribersLayout extends Table
     protected function columns(): iterable
     {
         return [
-            TD::make('id'),
-            TD::make('email'),
-            TD::make('status')->render(function ($value) {
-                return $value->status ? 'Активный' : 'Неактивный';
+            TD::make('id')
+                ->render(function ($subscriber) {
+                    return $subscriber['id'];
+                }),
+            TD::make('email')
+                ->render(function ($subscriber) {
+                    return $subscriber['email'];
+                }),
+
+            TD::make('user_id')->render(function ($subscriber) {
+                $user = User::find($subscriber['user_id']);
+                return $user->name;
             }),
+
         ];
     }
 }
