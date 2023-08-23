@@ -29,9 +29,9 @@ class PlatformProvider extends OrchidServiceProvider
     {
         return [
             Menu::make('Category')
-            ->icon('task')
-            ->route('platform.category')
-            ->title('Category'),
+                ->icon('task')
+                ->route('platform.category')
+                ->title('Category'),
 
             Menu::make('Product')
                 ->icon('task')
@@ -42,17 +42,21 @@ class PlatformProvider extends OrchidServiceProvider
                 ->icon('task')
                 ->route('platform.subscribers')
                 ->title('Subscribers'),
+            Menu::make('NewsLetter')
+                ->icon('task')
+                ->route('platform.newsletter')
+                ->title('NewsLetter'),
 
-             Menu::make(__('Users'))
-                 ->icon('user')
-                 ->route('platform.systems.users')
-                 ->permission('platform.systems.users')
-                 ->title(__('Access rights')),
+            Menu::make(__('Users'))
+                ->icon('user')
+                ->route('platform.systems.users')
+                ->permission('platform.systems.users')
+                ->title(__('Access rights')),
 
-             Menu::make(__('Roles'))
-                 ->icon('lock')
-                 ->route('platform.systems.roles')
-                 ->permission('platform.systems.roles'),
+            Menu::make(__('Roles'))
+                ->icon('lock')
+                ->route('platform.systems.roles')
+                ->permission('platform.systems.roles'),
         ];
     }
 

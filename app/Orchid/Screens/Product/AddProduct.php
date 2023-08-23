@@ -97,15 +97,15 @@ class AddProduct extends Screen
             $product->tags()->attach($tag);
         }
 
-        $subs = Subcribers::where('status', 1)->get();
-        foreach ($subs as $sub) {
-            $data = [
-                'email' => $sub->email,
-                'verification_code' => $sub->email_verified,
-                'product' => $product
-            ];
-            dispatch(new ProductJob($data));
-        }
+//        $subs = Subcribers::where('status', 1)->get();
+//        foreach ($subs as $sub) {
+//            $data = [
+//                'email' => $sub->email,
+//                'verification_code' => $sub->email_verified,
+//                'product' => $product
+//            ];
+//            dispatch(new ProductJob($data));
+//        }
 
         return redirect()->route('platform.products');
 

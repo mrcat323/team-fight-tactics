@@ -55,6 +55,8 @@ Route::screen('product', ProductScreen::class)
 
 Route::screen('subscribers', \App\Orchid\Screens\Subscribers\SubscribersScreen::class)
     ->name('platform.subscribers');
+Route::screen('newsletter', \App\Orchid\Screens\NewsLetter\NewsLetterScreen::class)
+    ->name('platform.newsletter');
 
 // Platform > Profile
 Route::screen('profile', UserProfileScreen::class)
