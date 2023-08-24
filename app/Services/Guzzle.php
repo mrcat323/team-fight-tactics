@@ -1,17 +1,17 @@
-<?php 
+<?php
 
 namespace App\Services;
 
 use GuzzleHttp\Client;
 
-class Guzzle
+class Guzzle extends Client
 {
     public function __construct()
     {
-        $client = new Client([
+        $config = [
             'base_uri' => env('SOUL_HOST')
-        ]);
+        ];
 
-        return $client;
+        parent::__construct($config);
     }
 }
