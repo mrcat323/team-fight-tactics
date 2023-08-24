@@ -16,6 +16,8 @@ use App\Orchid\Screens\Category\UpdateCategory;
 use App\Orchid\Screens\Category\AddCategory;
 use App\Orchid\Screens\Product\AddProduct;
 use App\Orchid\Screens\Product\UpdateProduct;
+use App\Orchid\Screens\Subscribers\SubscribersScreen;
+use App\Orchid\Screens\NewsLetter\NewsLetterScreen;
 /*
 |--------------------------------------------------------------------------
 | Dashboard Routes
@@ -53,9 +55,9 @@ Route::screen('product-edit/{product}', UpdateProduct::class)
 Route::screen('product', ProductScreen::class)
     ->name('platform.products');
 
-Route::screen('subscribers', \App\Orchid\Screens\Subscribers\SubscribersScreen::class)
+Route::screen('subscribers', SubscribersScreen::class)
     ->name('platform.subscribers');
-Route::screen('newsletter', \App\Orchid\Screens\NewsLetter\NewsLetterScreen::class)
+Route::screen('newsletter', NewsLetterScreen::class)
     ->name('platform.newsletter');
 
 // Platform > Profile

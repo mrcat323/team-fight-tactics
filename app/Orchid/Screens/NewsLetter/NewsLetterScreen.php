@@ -2,12 +2,14 @@
 
 namespace App\Orchid\Screens\NewsLetter;
 
-use GuzzleHttp\Client;
+use App\Models\User;
+use GuzzleHttp\Exception\BadResponseException;
 use Illuminate\Http\Request;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
+use App\Services\Guzzle;
 
 class NewsLetterScreen extends Screen
 {
@@ -65,42 +67,31 @@ class NewsLetterScreen extends Screen
 
     public function send(Request $request)
     {
-        $HOST = env('SOUL_HOST') . ":" . env('SOUL_PORT');
-        $client = new Client([
-            'base_uri' => $HOST
-        ]);
-        $response = $client->post('api/login', [
-            'json' => [
-                'email' => env('SOUL_USER'),
-                'password' => env('SOUL_PASSWORD'),
-            ],
-        ]);
+        if ($token = User::getToken()) {
+            $data = $request->only(['title', 'content']);
+            return $this->newsletter($token, $data);
+        }
+    }
 
-        if ($response->getStatusCode() === 200) {
-            $token = json_decode($response->getBody(), true);
-
-            $status = 0;
-            $response = $client->post('api/newsletter', [
+    public function newsletter($token, $data)
+    {
+        try {
+            $response = (new Guzzle)->post('/api/newsletter', [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $token,
-                    'Accept' => 'application/json',
+                    'Accept' => 'application/json'
                 ],
                 'json' => [
-                    'title' => $request->title,
-                    'content' => $request->content,
-                ],
+                    'title' => $data['title'],
+                    'content' => $data['content']
+                ]
             ]);
+        } catch (BadResponseException $e) {
+            $response = $e->getResponse();
 
-            if ($response->getStatusCode() === 200) {
-                return response()->json([
-                    'status' => 'OK'
-                ]);
-            }
-            else {
-                return response()->json([
-                    'status' => 'False'
-                ]);
-            }
+            return json_decode($response->getBody()->getContents(), true);
         }
+
+        return json_decode($response->getBody()->getContents(), true);
     }
 }

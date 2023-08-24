@@ -66,6 +66,7 @@ class ProductScreen extends Screen
         $product = Product::find($request->product);
 
         $product->delete();
+
         return redirect()->route('platform.product');
 
     }

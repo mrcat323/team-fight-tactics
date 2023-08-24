@@ -57,7 +57,6 @@ class CategoryScreen extends Screen
     {
         return [
             Subscribers::class,
-
         ];
     }
 

@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Services\Guzzle;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
 use Orchid\Platform\Models\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -55,22 +57,18 @@ class User extends Authenticatable implements JWTSubject
 
     public static function getToken()
     {
-        $HOST = env('SOUL_HOST') . ":" . env('SOUL_PORT');
-        $client = new Client([
-            'base_uri' => $HOST
-        ]);
-        $response = $client->post('api/login', [
-            'json' => [
-                'email' => env('SOUL_USER'),
-                'password' => env('SOUL_PASSWORD'),
-            ],
-        ]);
-        if ($response->getStatusCode() === 200) {
-            $token = json_decode($response->getBody(), true);
-            return $token;
+        try {
+            $response = (new Guzzle)->post('/api/login', [
+                'json' => [
+                    'email' => env('SOUL_USER'),
+                    'password' => env('SOUL_PASSWORD'),
+                ],
+            ]);
+        } catch (BadResponseException $e) {
+            $response = $e->getResponse();
+            return $response->getBody()->getContents();
         }
-        else {
-            return 0;
-        }
+
+        return json_decode($response->getBody()->getContents(), true);
     }
 }
