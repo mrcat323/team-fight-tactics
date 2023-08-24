@@ -4,7 +4,9 @@ namespace App\Orchid\Screens\Subscribers;
 
 use App\Models\User;
 use App\Orchid\Layouts\Subscribers\SubscribersLayout;
+use App\Services\Guzzle;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
 use Orchid\Screen\Screen;
 
 class SubscribersScreen extends Screen
@@ -18,18 +20,19 @@ class SubscribersScreen extends Screen
     {
 
         $token = User::getToken();
-        $HOST = env('SOUL_HOST') . ":" . env('SOUL_PORT');
-        $client = new Client([
-            'base_uri' => $HOST
-        ]);
-        $response = $client->get('api/subscribers', [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $token,
-                'Accept' => 'application/json',
-            ],
-        ]);
+
+        try {
+            $response = (new Guzzle)->get('/api/subscribers', [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $token,
+                    'Accept' => 'application/json',
+                ],
+            ]);
+        } catch (BadResponseException $e) {
+            return $e;
+        }
+
         $subscribers = json_decode($response->getBody()->getContents(), true);
-//        dd($subscribers);
 
         return [
             'subscribers' => $subscribers,
