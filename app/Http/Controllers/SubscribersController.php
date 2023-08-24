@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\Guzzle;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
 use Illuminate\Http\Request;
 
 class SubscribersController extends Controller
@@ -14,32 +16,28 @@ class SubscribersController extends Controller
             'email' => 'required|email',
         ]);
 
-        $email=$validated['email'];
+        $email = $validated['email'];
         $token = User::getToken();
-        $HOST = env('SOUL_HOST') . ":" . env('SOUL_PORT');
-        $client = new Client([
-            'base_uri' => $HOST
-        ]);
-            $response = $client->post('api/subscriber-add', [
+        $client = new Guzzle();
+        try {
+            $response =$client->post('api/subscriber-add', [
                 'headers' => [
-                    'Authorization' => 'Bearer ' . $token,
+                    'Authorization' => 'Bearer ' . $token['access_token'],
                     'Accept' => 'application/json',
                 ],
                 'json' => [
                     'email' => $email
                 ],
-            ]);
 
-            if ($response->getStatusCode() === 201) {
-                return response()->json([
-                    'status' => 'OK'
-                ]);
-            } else {
-                return response()->json([
-                    'status' => 'False'
-                ]);
-            }
+            ]);
+        } catch (BadResponseException $e) {
+            $response = $e->getResponse();
+
+            return json_decode($response->getBody()->getContents(), true);
         }
+        return json_decode($response->getBody()->getContents(), true);
+
+    }
 
 
 //        $data = [
@@ -52,7 +50,7 @@ class SubscribersController extends Controller
 //        return response()->json([
 //            'msg' => 'Sent successfully'
 //        ]);
- ///   }
+    ///   }
 
 //
 //    public function verify(Request $request)
