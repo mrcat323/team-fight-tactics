@@ -34,8 +34,6 @@ class SubscribersLayout extends Table
                 ->render(function ($subscriber) {
                     return $subscriber['email'];
                 }),
-
-
         ];
     }
 }
