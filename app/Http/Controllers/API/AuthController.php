@@ -73,16 +73,16 @@ class AuthController extends Controller
     {
         $verify = User::where('hash', $request->hash)->first();
 
+        if(!$verify) {
+            return response()->json(['message' => 'Email not found']);
+        }
+
         if ($verify->email_verified_at) {
-            return 'Your email already verified';
+            return response()->json(['message' => 'Your email already verified']);
         }
-        elseif ($verify) {
-            $verify->email_verified_at = Carbon::now();
-            $verify->save();
-            return 'Your email has been verified';
-        }
-        else {
-            return 'Email not found';
-        }
+
+        $verify->email_verified_at = Carbon::now();
+        $verify->save();
+        return response()->json(['message' => 'Your email has been verified']);
     }
 }
