@@ -35,10 +35,6 @@ class SubscribersLayout extends Table
                     return $subscriber['email'];
                 }),
 
-            TD::make('User')->render(function ($subscriber) {
-                $user = User::find($subscriber['user_id']);
-                return $user->name;
-            }),
 
         ];
     }
