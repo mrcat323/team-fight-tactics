@@ -36,7 +36,6 @@ class SubscribersController extends Controller
             return json_decode($response->getBody()->getContents(), true);
         }
         return json_decode($response->getBody()->getContents(), true);
-
     }
 
 
