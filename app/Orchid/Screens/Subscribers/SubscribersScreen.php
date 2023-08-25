@@ -7,6 +7,7 @@ use App\Orchid\Layouts\Subscribers\SubscribersLayout;
 use App\Services\Guzzle;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
+use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
 
 class SubscribersScreen extends Screen
@@ -24,7 +25,7 @@ class SubscribersScreen extends Screen
         try {
             $response = (new Guzzle)->get('/api/subscribers', [
                 'headers' => [
-                    'Authorization' => 'Bearer ' . $token,
+                    'Authorization' => 'Bearer ' . $token['access_token'],
                     'Accept' => 'application/json',
                 ],
             ]);
@@ -58,7 +59,8 @@ class SubscribersScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-
+            Link::make('Add')
+                ->route('platform.subscriber.add'),
         ];
     }
 
